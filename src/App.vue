@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{'showing-modal': modal}">
+  <div id="app">
     <router-view/>
     <component v-if="modal" :is="modal" :payload="modalData"></component>
   </div>
@@ -36,10 +36,12 @@ export default {
     showModal ({modal, data}) {
       this.modal = modal
       this.modalData = data
+      document.body.className = 'modal-open'
     },
     hideModal () {
       this.modal = ''
       this.modalData = {}
+      document.body.className = ''
     }
   }
 }
@@ -48,8 +50,8 @@ export default {
 <style>
 @import 'bulma/css/bulma.min.css';
 
-html, body, #app {
-  height: 100%;
+html {
+  overflow: visible;
 }
 
 #app {
@@ -60,7 +62,7 @@ html, body, #app {
   color: #2c3e50;
 }
 
-#app.showing-modal {
+body.modal-open {
   overflow: hidden;
 }
 </style>
