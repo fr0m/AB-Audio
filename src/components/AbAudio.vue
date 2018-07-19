@@ -37,7 +37,7 @@
       </table>
     </div>
     <img-modal v-show="showingImg" @hide="hideImg">
-      <p v-for="img in showingImg" class="image is-8by3" :key="img.src">
+      <p v-for="img in showingImg" class="image" :key="img.src">
         <span>{{img.key}}</span>
         <img :src="img.src" alt="">
       </p>
@@ -112,12 +112,5 @@ export default {
   }
   audio {
     height: 54px;
-  }
-  .is-8by3 {
-    padding-top: 37.5%;
-  }
-  .is-8by3:last-child {
-    padding-top: 0;
-    padding-bottom: 37.5%;
   }
 </style>
