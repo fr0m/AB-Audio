@@ -2,21 +2,21 @@
   <section class="section">
     <div class="container">
       <header>
-        Playing：
+        正在播放：
         <span>{{ playingAudio }}</span>
       </header>
       <table class="table is-bordered is-striped">
         <thead>
           <tr>
-            <th>index</th>
-            <th>src</th>
-            <th>dist</th>
+            <th>序号</th>
+            <th>处理前</th>
+            <th>处理后</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(url, index) in data" :key="url.src">
-            <td>
+            <td class="has-text-centered">
               {{index}}
             </td>
             <td>
@@ -30,29 +30,23 @@
               </lazy-component>
             </td>
             <td>
-              <button class="button is-primary" type="button" @click="showImg([{src: url.src_wave, key: 'src'}, {src: url.dst_wave, key: 'dst'}])">对比波形图</button>
+              <button class="button is-primary" type="button" @click="showWaveModal(url)">对比波形图</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <img-modal v-show="showingImg" @hide="hideImg">
-      <p v-for="img in showingImg" class="image" :key="img.src">
-        <span>{{img.key}}</span>
-        <img :src="img.src" alt="">
-      </p>
-    </img-modal>
   </section>
 </template>
 
 <script>
 import axios from 'axios'
-import ImgModal from './ImgModal'
 import data from '@/assets/data.json'
+import { modalMixin } from './public/mixins'
 
 export default {
   name: 'ab-audio',
-  components: {ImgModal},
+  mixins: [modalMixin],
   data () {
     return {
       data,
@@ -73,11 +67,11 @@ export default {
         this.data = JSON.parse(res)
       })
     },
-    showImg (img) {
-      this.showingImg = img
-    },
-    hideImg () {
-      this.showingImg = ''
+    showWaveModal (data) {
+      this.showModal({
+        data,
+        modal: 'wave-modal'
+      })
     }
   },
   directives: {
@@ -99,16 +93,15 @@ export default {
   td {
     vertical-align: middle;
   }
+  th {
+    text-align: center;
+  }
   header {
     margin: 0 auto;
     margin-bottom: 15px;
   }
   span {
     color: #42afe3;
-  }
-  .image span {
-    font-size: 18px;
-    font-weight: 700;
   }
   audio {
     height: 54px;
